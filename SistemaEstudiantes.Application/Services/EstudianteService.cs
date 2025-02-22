@@ -30,7 +30,7 @@ namespace SistemaEstudiantes.Application.Services
             return await _estudianteRepository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(CreateUsuarioDTO createEstudianteDTO)
+        public async Task AddAsync(CreateEstudianteDTO createEstudianteDTO)
         {
             var estudiante = _mapper.Map<Estudiante>(createEstudianteDTO);
             await _estudianteRepository.AddAsync(estudiante);

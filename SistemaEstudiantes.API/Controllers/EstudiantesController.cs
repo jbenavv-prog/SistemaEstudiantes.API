@@ -16,7 +16,7 @@ namespace SistemaEstudiantes.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUsuarioDTO createEstudianteDTO) {
+        public async Task<IActionResult> Create(CreateEstudianteDTO createEstudianteDTO) {
             await _estudianteService.AddAsync(createEstudianteDTO);
             return Ok("Estudiante creado exitosamente.");
         }
