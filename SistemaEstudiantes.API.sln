@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaEstudiantes.API", "SistemaEstudiantes.API\SistemaEstudiantes.API.csproj", "{A2CFD9AC-4DB8-4A08-8E41-6A1A92B4BE62}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaEstudiantes.API", "SistemaEstudiantes.API\SistemaEstudiantes.API.csproj", "{A2CFD9AC-4DB8-4A08-8E41-6A1A92B4BE62}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaEstudiantes.Application", "SistemaEstudiantes.Application\SistemaEstudiantes.Application.csproj", "{6FD79ACF-F28F-4566-8453-B34E2B2145DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaEstudiantes.Application", "SistemaEstudiantes.Application\SistemaEstudiantes.Application.csproj", "{6FD79ACF-F28F-4566-8453-B34E2B2145DF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaEstudiantes.Domain", "SistemaEstudiantes.Domain\SistemaEstudiantes.Domain.csproj", "{B9711E98-CFF3-4EE2-8E9D-9D498B3F80F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaEstudiantes.Domain", "SistemaEstudiantes.Domain\SistemaEstudiantes.Domain.csproj", "{B9711E98-CFF3-4EE2-8E9D-9D498B3F80F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaEstudiantes.Infrastructure", "SistemaEstudiantes.Infrastructure\SistemaEstudiantes.Infrastructure.csproj", "{1CD4BF32-8989-48CA-B857-18183C3C4631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaEstudiantes.Infrastructure", "SistemaEstudiantes.Infrastructure\SistemaEstudiantes.Infrastructure.csproj", "{1CD4BF32-8989-48CA-B857-18183C3C4631}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{9CB6E912-E412-4226-99CE-021B2EB10EF6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{1CD4BF32-8989-48CA-B857-18183C3C4631}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1CD4BF32-8989-48CA-B857-18183C3C4631}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1CD4BF32-8989-48CA-B857-18183C3C4631}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CB6E912-E412-4226-99CE-021B2EB10EF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CB6E912-E412-4226-99CE-021B2EB10EF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CB6E912-E412-4226-99CE-021B2EB10EF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CB6E912-E412-4226-99CE-021B2EB10EF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

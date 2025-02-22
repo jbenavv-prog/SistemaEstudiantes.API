@@ -1,5 +1,7 @@
-﻿using SistemaEstudiantes.Domain.Entities;
+﻿using AutoMapper;
+using SistemaEstudiantes.Domain.Entities;
 using SistemaEstudiantes.Domain.Interfaces;
+using SistemaEstudiantes.DTOs.Estudiante;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +13,11 @@ namespace SistemaEstudiantes.Application.Services
     public class EstudianteService
     {
         private readonly IEstudianteRepository _estudianteRepository;
-        public EstudianteService(IEstudianteRepository estudianteRepository)
+        private readonly IMapper _mapper;
+        public EstudianteService(IEstudianteRepository estudianteRepository, IMapper mapper)
         {
             _estudianteRepository = estudianteRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<Estudiante>> GetAllAsync()
@@ -26,9 +30,11 @@ namespace SistemaEstudiantes.Application.Services
             return await _estudianteRepository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(Estudiante estudiante)
+        public async Task AddAsync(CreateEstudianteDTO createEstudianteDTO)
         {
+            var estudiante = _mapper.Map<Estudiante>(createEstudianteDTO);
             await _estudianteRepository.AddAsync(estudiante);
+
         }
 
         public async Task UpdateAsync(Estudiante estudiante)

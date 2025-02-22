@@ -1,3 +1,4 @@
+using SistemaEstudiantes.API.Mapping;
 using SistemaEstudiantes.Domain.Interfaces;
 using SistemaEstudiantes.Infrastructure.Repositories;
 
@@ -11,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 var app = builder.Build();
 
