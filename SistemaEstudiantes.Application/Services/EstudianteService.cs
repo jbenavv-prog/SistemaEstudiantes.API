@@ -34,7 +34,6 @@ namespace SistemaEstudiantes.Application.Services
         {
             var estudiante = _mapper.Map<Estudiante>(createEstudianteDTO);
             await _estudianteRepository.AddAsync(estudiante);
-
         }
 
         public async Task UpdateAsync(Estudiante estudiante)
