@@ -1,4 +1,4 @@
-﻿namespace SistemaEstudiantes.DTOs.Estudiante
+﻿namespace SistemaEstudiantes.DTOs
 {
     public class CreateEstudianteDTO
     {

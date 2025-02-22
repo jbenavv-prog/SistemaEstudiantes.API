@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SistemaEstudiantes.Domain.Entities;
 using SistemaEstudiantes.Domain.Interfaces;
-using SistemaEstudiantes.DTOs.Estudiante;
+using SistemaEstudiantes.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +30,7 @@ namespace SistemaEstudiantes.Application.Services
             return await _estudianteRepository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(CreateEstudianteDTO createEstudianteDTO)
+        public async Task AddAsync(CreateUsuarioDTO createEstudianteDTO)
         {
             var estudiante = _mapper.Map<Estudiante>(createEstudianteDTO);
             await _estudianteRepository.AddAsync(estudiante);

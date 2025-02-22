@@ -1,9 +1,10 @@
 ﻿namespace SistemaEstudiantes.DTOs
 {
-    public class UpdateEstudianteDTO
+    public class CreateUsuarioDTO
     {
-        public int ID { get; set; }
         public string Nombre { get; set; }
+        public string Correo { get; set; }
+        public string Contrasena { get; set; }
         public int IDPrograma { get; set; }
     }
 }

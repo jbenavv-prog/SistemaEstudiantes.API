@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SistemaEstudiantes.DTOs.Estudiante;
+using SistemaEstudiantes.DTOs;
 using SistemaEstudiantes.Application.Services;
 using SistemaEstudiantes.Domain.Entities;
 
@@ -16,7 +16,7 @@ namespace SistemaEstudiantes.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateEstudianteDTO createEstudianteDTO) {
+        public async Task<IActionResult> Create(CreateUsuarioDTO createEstudianteDTO) {
             await _estudianteService.AddAsync(createEstudianteDTO);
             return Ok("Estudiante creado exitosamente.");
         }
