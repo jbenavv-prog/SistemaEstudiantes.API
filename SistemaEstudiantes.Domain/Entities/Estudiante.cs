@@ -10,14 +10,9 @@ namespace SistemaEstudiantes.Domain.Entities
 {
     public class Estudiante
     {
-        [Key]
-        public int ID { get; set; }
+        public int IDEstudiante { get; set; }
 
-        [Required]
-        [MaxLength(100)]
         public string Nombre { get; set; } = String.Empty;
-
-     /*   [ForeignKey("")]
-        public int IDPrograma { get; set; }*/
+        public Usuario Usuario { get; set; }
     }
 }

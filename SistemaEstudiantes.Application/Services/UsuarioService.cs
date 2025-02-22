@@ -3,11 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using SistemaEstudiantes.Domain.Entities;
 using SistemaEstudiantes.Domain.Interfaces;
 using SistemaEstudiantes.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SistemaEstudiantes.Infrastructure.Security;
 
 namespace SistemaEstudiantes.Application.Services
 {
@@ -22,7 +18,27 @@ namespace SistemaEstudiantes.Application.Services
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
             _passwordHasher = passwordHasher;
-            _jwtProvider = jwtProvider;
+            _jwtProvider = jwtProvider; 
+        }
+
+        public async Task<bool> RegisterAsync(CreateUsuarioDTO createUsuarioDTO)
+        {
+            var usuario = _mapper.Map<Usuario>(createUsuarioDTO);
+            usuario.Contrasena = _passwordHasher.HashPassword(usuario, createUsuarioDTO.Contrasena);
+            await _usuarioRepository.AddAsync(usuario);
+            return true;
+        }
+
+        public async Task<string> LoginAsync(LoginUsuarioDTO loginUsuarioDTO) {
+            var usuario = await _usuarioRepository.GetByEmailAsync(loginUsuarioDTO.Email);
+            if (usuario == null) {
+                throw new Exception("Usuario no encontrado");
+            }
+            var result = _passwordHasher.VerifyHashedPassword(usuario, usuario.Contrasena, loginUsuarioDTO.Contrasena);
+            if (result == PasswordVerificationResult.Failed) {
+                throw new Exception("Credenciales incorrectas");
+            }
+            return _jwtProvider.GenerateToken(usuario.IDUsuario.ToString());
         }
 
         public async Task<IEnumerable<Usuario>> GetAllAsync()
@@ -35,10 +51,10 @@ namespace SistemaEstudiantes.Application.Services
             return await _usuarioRepository.GetByIdAsync(id);
         }
 
-        public async Task AddAsync(CreateEstudianteDTO createEstudianteDTO)
+        public async Task AddAsync(CreateUsuarioDTO createUsuarioDTO)
         {
-            var estudiante = _mapper.Map<Usuario>(createEstudianteDTO);
-            await _usuarioRepository.AddAsync(estudiante);
+            var usuario = _mapper.Map<Usuario>(createUsuarioDTO);
+            await _usuarioRepository.AddAsync(usuario);
         }
 
         public async Task UpdateAsync(Usuario estudiante)
