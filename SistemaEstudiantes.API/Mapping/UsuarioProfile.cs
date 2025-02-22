@@ -9,7 +9,7 @@ namespace SistemaEstudiantes.API.Mapping
         public UsuarioProfile()
         {
             CreateMap<Usuario, LoginUsuarioDTO>();
-            CreateMap<Usuario, CreateUsuarioDTO>();::
+            CreateMap<Usuario, CreateUsuarioDTO>();
             CreateMap<LoginUsuarioDTO, Usuario>();
             CreateMap<CreateUsuarioDTO, Usuario>();
         }
