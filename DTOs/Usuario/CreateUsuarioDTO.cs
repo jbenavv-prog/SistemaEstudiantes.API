@@ -2,9 +2,9 @@
 {
     public class CreateUsuarioDTO
     {
-        public string Nombre { get; set; }
-        public string Email { get; set; }
-        public string Contrasena { get; set; }
+        public string Nombre { get; set; } = String.Empty;
+        public string Email { get; set; } = String.Empty;
+        public string Contrasena { get; set; } = String.Empty;
         public int IDPrograma { get; set; }
     }
 }
