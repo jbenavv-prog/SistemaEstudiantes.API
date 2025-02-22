@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SistemaEstudiantes.Domain.Interfaces
+namespace SistemaEstudiantes.Infrastructure.Security
 {
     public interface IJwtProvider
     {
-        string GenerateToken(Usuario usuario);
+        string GenerateToken(string IDUsuario);
     }
 }

@@ -28,6 +28,10 @@ namespace SistemaEstudiantes.Infrastructure.Repositories
             return await _context.Usuarios.FindAsync(id);
         }
 
+        public async Task<Usuario?> GetByEmailAsync(string email)
+        {
+            return await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == email);
+        }
         public async Task AddAsync(Usuario usuario)
         {
             await _context.Usuarios.AddAsync(usuario);

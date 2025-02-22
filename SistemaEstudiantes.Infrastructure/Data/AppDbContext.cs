@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SistemaEstudiantes.Domain.Entities;
+using SistemaEstudiantes.Infrastructure.Configurations;
 
 namespace SistemaEstudiantes.Infrastructure.Data
 {
@@ -14,6 +15,11 @@ namespace SistemaEstudiantes.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
+            modelBuilder.ApplyConfiguration(new EstudianteConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+
         }
     }
 }
