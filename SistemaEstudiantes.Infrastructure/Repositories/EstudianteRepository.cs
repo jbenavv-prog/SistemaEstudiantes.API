@@ -23,7 +23,7 @@ namespace SistemaEstudiantes.Infrastructure.Repositories
             return await _context.Estudiantes.ToListAsync();
         }
 
-        public async Task<Estudiante> GetByIdAsync(int id)
+        public async Task<Estudiante?> GetByIdAsync(int id)
         {
             return await _context.Estudiantes.FindAsync(id);
         }
@@ -43,6 +43,9 @@ namespace SistemaEstudiantes.Infrastructure.Repositories
         public async Task DeleteAsync(int id)
         {
             var estudiante = await GetByIdAsync(id);
+            if (estudiante == null)
+                throw new Exception($"Estudiante {id} no encontrado");
+
             _context.Estudiantes.Remove(estudiante);
             await _context.SaveChangesAsync();
         }

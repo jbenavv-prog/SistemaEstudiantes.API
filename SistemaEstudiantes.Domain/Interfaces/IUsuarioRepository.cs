@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace SistemaEstudiantes.Domain.Interfaces
 {
-    public interface IEstudianteRepository
+    public interface IUsuarioRepository
     {
-        Task<IEnumerable<Estudiante>> GetAllAsync();
-        Task<Estudiante?> GetByIdAsync(int id);
-        Task AddAsync(Estudiante estudiante);
-        Task UpdateAsync(Estudiante estudiante);
+        Task<IEnumerable<Usuario>> GetAllAsync();
+        Task<Usuario?> GetByIdAsync(int id);
+        Task AddAsync(Usuario usuario);
+        Task UpdateAsync(Usuario usuario);
         Task DeleteAsync(int id);
     }
 }
