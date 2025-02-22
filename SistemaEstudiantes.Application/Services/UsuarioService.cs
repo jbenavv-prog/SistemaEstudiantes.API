@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using SistemaEstudiantes.Domain.Entities;
 using SistemaEstudiantes.Domain.Interfaces;
 using SistemaEstudiantes.DTOs;
@@ -14,10 +15,14 @@ namespace SistemaEstudiantes.Application.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IMapper _mapper;
-        public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper)
+        private readonly IPasswordHasher<Usuario> _passwordHasher;
+        private readonly IJwtProvider _jwtProvider;
+        public UsuarioService(IUsuarioRepository usuarioRepository, IMapper mapper, IPasswordHasher<Usuario> passwordHasher, IJwtProvider jwtProvider)
         {
             _usuarioRepository = usuarioRepository;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
+            _jwtProvider = jwtProvider;
         }
 
         public async Task<IEnumerable<Usuario>> GetAllAsync()
