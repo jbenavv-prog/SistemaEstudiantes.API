@@ -29,7 +29,7 @@ namespace SistemaEstudiantes.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(CreateUsuarioDTO createUsuarioDTO)
         {
-            await _usuarioService.AddAsync(createUsuarioDTO);
+            await _usuarioService.RegisterAsync(createUsuarioDTO);
             return Ok("Usuario creado exitosamente.");
         }
     }

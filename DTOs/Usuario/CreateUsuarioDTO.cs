@@ -4,9 +4,6 @@ namespace SistemaEstudiantes.DTOs
 {
     public class CreateUsuarioDTO
     {
-        [Required(ErrorMessage = "El nombre de usuario es obligatorio")]
-        public string Nombre { get; set; } = String.Empty;
-
         [Required(ErrorMessage = "El email es obligatorio")]
         [EmailAddress(ErrorMessage = "El email no es válido")]
         public string Email { get; set; } = String.Empty;
