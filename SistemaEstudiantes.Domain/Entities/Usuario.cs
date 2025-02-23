@@ -12,14 +12,13 @@ namespace SistemaEstudiantes.Domain.Entities
     public class Usuario
     {
         public int IDUsuario { get; set; }
-
-        public int IDEstudiante { get; set; }
+        public string Nombre { get; set; } = String.Empty;
 
         public string Email { get; set; } = String.Empty;
 
         public string Contrasena { get; set; } = String.Empty;
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
-        public Estudiante Estudiante { get; set; }
+        public int IDPrograma { get; set; }
     }
 }

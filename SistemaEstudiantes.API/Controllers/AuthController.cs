@@ -18,19 +18,23 @@ namespace SistemaEstudiantes.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginUsuarioDTO loginUsuarioDTO)
         {
-            var user = await _usuarioService.LoginAsync(loginUsuarioDTO);
-            if (user == null)
+            try
             {
-                return Unauthorized("Usuario o contraseña incorrectos.");
+                var response = await _usuarioService.LoginAsync(loginUsuarioDTO);
+                return Ok(new { message = "Ingreso de usuario exitoso", data = response });
             }
-            return Ok(user);
+            catch (Exception ex) 
+            {
+                return Unauthorized(new { message = ex.Message});
+            }
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(CreateUsuarioDTO createUsuarioDTO)
         {
             await _usuarioService.RegisterAsync(createUsuarioDTO);
-            return Ok("Usuario creado exitosamente.");
+            return Ok(new { message = "Usuario creado exitosamente." });
         }
     }
 }
+    

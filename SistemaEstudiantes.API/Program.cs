@@ -10,11 +10,20 @@ using SistemaEstudiantes.Infrastructure.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("OpenCorsPolicy", policy =>
+    {
+        policy.AllowAnyOrigin()    // Permite cualquier origen
+              .AllowAnyMethod()    // Permite cualquier método (GET, POST, PUT, DELETE, etc.)
+              .AllowAnyHeader();   // Permite cualquier cabecera
+    });
+});
+
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
-builder.Services.AddScoped<EstudianteService>();
 builder.Services.AddScoped<UsuarioService>();
 
 builder.Services.AddControllers();
@@ -22,7 +31,6 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IEstudianteRepository, EstudianteRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
@@ -37,6 +45,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("OpenCorsPolicy");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

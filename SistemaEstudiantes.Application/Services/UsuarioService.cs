@@ -29,7 +29,7 @@ namespace SistemaEstudiantes.Application.Services
             return true;
         }
 
-        public async Task<string> LoginAsync(LoginUsuarioDTO loginUsuarioDTO) {
+        public async Task<LoginResponseUsuarioDTO> LoginAsync(LoginUsuarioDTO loginUsuarioDTO) {
             var usuario = await _usuarioRepository.GetByEmailAsync(loginUsuarioDTO.Email);
             if (usuario == null) {
                 throw new Exception("Usuario no encontrado");
@@ -38,7 +38,14 @@ namespace SistemaEstudiantes.Application.Services
             if (result == PasswordVerificationResult.Failed) {
                 throw new Exception("Credenciales incorrectas");
             }
-            return _jwtProvider.GenerateToken(usuario.IDUsuario.ToString());
+            var token =  _jwtProvider.GenerateToken(usuario.IDUsuario.ToString());
+
+            return new LoginResponseUsuarioDTO {
+                Token = token,
+                IDUsuario = usuario.IDUsuario,
+                Nombre = usuario.Nombre,
+                Email = usuario.Email
+            };
         }
 
         public async Task<IEnumerable<Usuario>> GetAllAsync()

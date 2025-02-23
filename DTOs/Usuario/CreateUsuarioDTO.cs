@@ -12,10 +12,5 @@ namespace SistemaEstudiantes.DTOs
             ErrorMessage = "La contraseña debe contener al menos una letra mayúscula, una minúscula, un número y un carácter especial.")]
         public string Contrasena { get; set; } = String.Empty;
 
-        [Required(ErrorMessage = "El ID de estudiante es obligatorio")]
-        public int IDEstudiante { get; set; }
-
-        [Required(ErrorMessage = "El ID del programa es obligatorio")]
-        public int IDPrograma { get; set; }
     }
 }
