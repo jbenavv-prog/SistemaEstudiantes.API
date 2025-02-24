@@ -40,7 +40,8 @@ namespace SistemaEstudiantes.Application.Services
             }
             var token =  _jwtProvider.GenerateToken(usuario.IDUsuario.ToString());
 
-            return new LoginResponseUsuarioDTO {
+            return new LoginResponseUsuarioDTO
+            {
                 Token = token,
                 IDUsuario = usuario.IDUsuario,
                 Nombre = usuario.Nombre,

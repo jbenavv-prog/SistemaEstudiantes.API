@@ -14,9 +14,9 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("OpenCorsPolicy", policy =>
     {
-        policy.AllowAnyOrigin()    // Permite cualquier origen
-              .AllowAnyMethod()    // Permite cualquier método (GET, POST, PUT, DELETE, etc.)
-              .AllowAnyHeader();   // Permite cualquier cabecera
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
     });
 });
 
@@ -25,6 +25,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Add services to the container.
 builder.Services.AddScoped<UsuarioService>();
+builder.Services.AddScoped<MateriaService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,6 +33,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IProfesorRepository, ProfesorRepository>();
+builder.Services.AddScoped<IUsuarioMateriaRepository, UsuarioMateriaRepository>();
+builder.Services.AddScoped<IMateriaRepository, MateriaRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();

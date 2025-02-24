@@ -9,18 +9,16 @@ using System.Threading.Tasks;
 
 namespace SistemaEstudiantes.Domain.Entities
 {
-    public class Usuario
+    public class Materia
     {
-        public int IDUsuario { get; set; }
-        public int IDPrograma { get; set; }
+        public int IDMateria { get; set; }
+        public int IDProfesor { get; set; }
         public string Nombre { get; set; } = String.Empty;
-
-        public string Email { get; set; } = String.Empty;
-
-        public string Contrasena { get; set; } = String.Empty;
-
-        public DateTime FechaRegistro { get; set; } = DateTime.Now;
+        public int Creditos { get; set; }
+        public Profesor? Profesor { get; set; }
         public ICollection<UsuarioMateria> UsuarioMaterias { get; set; } = new List<UsuarioMateria>();
-        public Programa Programa { get; set; } = new Programa();
+
     }
 }
+
+
