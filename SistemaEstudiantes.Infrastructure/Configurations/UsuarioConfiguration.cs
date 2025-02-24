@@ -12,15 +12,15 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
 
             builder.HasIndex(u => u.Email)
                 .IsUnique();
-            // Clave primaria
+       
             builder.HasKey(u => u.IDUsuario);
 
-            // Relación Uno a Uno con Estudiante
-            /*builder.HasOne(u => u.Estudiante)
-               .WithOne(e => e.Usuario)
-               .HasForeignKey<Usuario>(u => u.IDEstudiante)
-               .IsRequired()
-               .OnDelete(DeleteBehavior.Cascade);*/
+            builder.HasOne(u => u.Programa)
+                   .WithMany(p => p.Usuarios)
+                   .HasForeignKey(m => m.IDPrograma)
+                   .IsRequired()
+                   .OnDelete(DeleteBehavior.Cascade);
+
             builder.Property(u => u.Nombre)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -35,8 +35,6 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
 
             builder.Property(u => u.FechaRegistro)
                 .IsRequired();
-
-            builder.Property(u => u.IDPrograma);
         }
     }
 }

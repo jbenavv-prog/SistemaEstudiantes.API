@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaEstudiantes.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SistemaEstudiantes.Infrastructure.Data;
 namespace SistemaEstudiantes.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250223214839_AllEntitiesConf")]
+    partial class AllEntitiesConf
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +34,7 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDMateria"));
 
                     b.Property<int>("Creditos")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasDefaultValue(3);
+                        .HasColumnType("int");
 
                     b.Property<int>("IDProfesor")
                         .HasColumnType("int");
@@ -48,78 +49,6 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
                     b.HasIndex("IDProfesor");
 
                     b.ToTable("Materias", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IDMateria = 1,
-                            Creditos = 3,
-                            IDProfesor = 1,
-                            Nombre = "Programación I"
-                        },
-                        new
-                        {
-                            IDMateria = 2,
-                            Creditos = 3,
-                            IDProfesor = 1,
-                            Nombre = "Programación II"
-                        },
-                        new
-                        {
-                            IDMateria = 3,
-                            Creditos = 3,
-                            IDProfesor = 2,
-                            Nombre = "Bases de Datos"
-                        },
-                        new
-                        {
-                            IDMateria = 4,
-                            Creditos = 3,
-                            IDProfesor = 2,
-                            Nombre = "Sistemas Operativos"
-                        },
-                        new
-                        {
-                            IDMateria = 5,
-                            Creditos = 3,
-                            IDProfesor = 3,
-                            Nombre = "Redes de Computadoras"
-                        },
-                        new
-                        {
-                            IDMateria = 6,
-                            Creditos = 3,
-                            IDProfesor = 3,
-                            Nombre = "Seguridad Informática"
-                        },
-                        new
-                        {
-                            IDMateria = 7,
-                            Creditos = 3,
-                            IDProfesor = 4,
-                            Nombre = "Arquitectura de Computadoras"
-                        },
-                        new
-                        {
-                            IDMateria = 8,
-                            Creditos = 3,
-                            IDProfesor = 4,
-                            Nombre = "Inteligencia Artificial"
-                        },
-                        new
-                        {
-                            IDMateria = 9,
-                            Creditos = 3,
-                            IDProfesor = 5,
-                            Nombre = "Desarrollo Web"
-                        },
-                        new
-                        {
-                            IDMateria = 10,
-                            Creditos = 3,
-                            IDProfesor = 5,
-                            Nombre = "Ingeniería de Software"
-                        });
                 });
 
             modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Profesor", b =>
@@ -138,58 +67,6 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
                     b.HasKey("IDProfesor");
 
                     b.ToTable("Profesores", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IDProfesor = 1,
-                            Nombre = "Carlos Gómez"
-                        },
-                        new
-                        {
-                            IDProfesor = 2,
-                            Nombre = "Ana Rodríguez"
-                        },
-                        new
-                        {
-                            IDProfesor = 3,
-                            Nombre = "Luis Fernández"
-                        },
-                        new
-                        {
-                            IDProfesor = 4,
-                            Nombre = "María López"
-                        },
-                        new
-                        {
-                            IDProfesor = 5,
-                            Nombre = "Javier Pérez"
-                        });
-                });
-
-            modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Programa", b =>
-                {
-                    b.Property<int>("IDPrograma")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IDPrograma"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("IDPrograma");
-
-                    b.ToTable("Programas", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            IDPrograma = 1,
-                            Nombre = "Ingeniería de Sistemas"
-                        });
                 });
 
             modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Usuario", b =>
@@ -225,8 +102,6 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
 
                     b.HasIndex("Email")
                         .IsUnique();
-
-                    b.HasIndex("IDPrograma");
 
                     b.ToTable("Usuarios", (string)null);
                 });
@@ -265,17 +140,6 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
                     b.Navigation("Profesor");
                 });
 
-            modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Usuario", b =>
-                {
-                    b.HasOne("SistemaEstudiantes.Domain.Entities.Programa", "Programa")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("IDPrograma")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Programa");
-                });
-
             modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.UsuarioMateria", b =>
                 {
                     b.HasOne("SistemaEstudiantes.Domain.Entities.Materia", "Materia")
@@ -303,11 +167,6 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
             modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Profesor", b =>
                 {
                     b.Navigation("Materias");
-                });
-
-            modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Programa", b =>
-                {
-                    b.Navigation("Usuarios");
                 });
 
             modelBuilder.Entity("SistemaEstudiantes.Domain.Entities.Usuario", b =>
