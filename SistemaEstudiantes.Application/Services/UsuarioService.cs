@@ -45,7 +45,7 @@ namespace SistemaEstudiantes.Application.Services
                 Token = token,
                 IDUsuario = usuario.IDUsuario,
                 Nombre = usuario.Nombre,
-                Email = usuario.Email
+                Email = usuario.Email,
             };
         }
 
@@ -65,9 +65,11 @@ namespace SistemaEstudiantes.Application.Services
             await _usuarioRepository.AddAsync(usuario);
         }
 
-        public async Task UpdateAsync(Usuario estudiante)
+        public async Task UpdateAsync(SuscripcionProgramaUsuarioDTO suscripcionPrograma)
         {
-            await _usuarioRepository.UpdateAsync(estudiante);
+            var usuario = _mapper.Map<Usuario>(suscripcionPrograma);
+
+            await _usuarioRepository.UpdateAsync(usuario);
         }
 
         public async Task DeleteAsync(int id)

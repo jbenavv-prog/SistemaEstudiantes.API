@@ -26,6 +26,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Add services to the container.
 builder.Services.AddScoped<UsuarioService>();
 builder.Services.AddScoped<MateriaService>();
+builder.Services.AddScoped<ProgramaService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IProfesorRepository, ProfesorRepository>();
 builder.Services.AddScoped<IUsuarioMateriaRepository, UsuarioMateriaRepository>();
 builder.Services.AddScoped<IMateriaRepository, MateriaRepository>();
+builder.Services.AddScoped<IProgramaRepository, ProgramaRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IPasswordHasher<Usuario>, PasswordHasher<Usuario>>();
 builder.Services.AddScoped<IJwtProvider, JwtProvider>();

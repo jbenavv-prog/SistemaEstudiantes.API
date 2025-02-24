@@ -18,7 +18,6 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
             builder.HasOne(u => u.Programa)
                    .WithMany(p => p.Usuarios)
                    .HasForeignKey(m => m.IDPrograma)
-                   .IsRequired()
                    .OnDelete(DeleteBehavior.Cascade);
 
             builder.Property(u => u.Nombre)

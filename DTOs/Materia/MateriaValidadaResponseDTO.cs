@@ -2,6 +2,7 @@
 {
     public class MateriaValidadaResponseDTO
     {
+        public int IdMateria { get; set; }
         public string Nombre { get; set; } = string.Empty;
         public bool PuedeIngresar { get; set; }
         public bool EsMiembro { get; set; }

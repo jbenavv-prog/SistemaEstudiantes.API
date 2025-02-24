@@ -12,7 +12,7 @@ namespace SistemaEstudiantes.Domain.Entities
     public class Usuario
     {
         public int IDUsuario { get; set; }
-        public int IDPrograma { get; set; }
+        public int? IDPrograma { get; set; }
         public string Nombre { get; set; } = String.Empty;
 
         public string Email { get; set; } = String.Empty;
@@ -21,6 +21,6 @@ namespace SistemaEstudiantes.Domain.Entities
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
         public ICollection<UsuarioMateria> UsuarioMaterias { get; set; } = new List<UsuarioMateria>();
-        public Programa Programa { get; set; } = new Programa();
+        public Programa? Programa { get; set; }
     }
 }

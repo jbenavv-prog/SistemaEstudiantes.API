@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SistemaEstudiantes.DTOs;
 using SistemaEstudiantes.Application.Services;
-using SistemaEstudiantes.Domain.Entities;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace SistemaEstudiantes.API.Controllers
 {

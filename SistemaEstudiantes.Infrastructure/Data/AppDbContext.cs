@@ -10,6 +10,7 @@ namespace SistemaEstudiantes.Infrastructure.Data
         public DbSet<Materia> Materias { get; set; }
         public DbSet<UsuarioMateria> UsuarioMaterias { get; set; }
         public DbSet<Profesor> Profesores { get; set; }
+        public DbSet<Programa> Programas { get; set; }
         
         public AppDbContext() { }
         // Constructor con parámetros (usado en tiempo de ejecución)

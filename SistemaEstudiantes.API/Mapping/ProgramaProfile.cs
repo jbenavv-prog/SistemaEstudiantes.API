@@ -4,11 +4,11 @@ using AutoMapper;
 
 namespace SistemaEstudiantes.API.Mapping
 {
-    public class MateriaProfile : Profile
+    public class ProgramaProfile : Profile
     {
-        public MateriaProfile()
+        public ProgramaProfile()
         {
-            CreateMap<Materia, ProgramaResponseDTO>();
+            CreateMap<Programa, ProgramaResponseDTO>();
             CreateMap<ProgramaResponseDTO, Materia>();
         }
     }

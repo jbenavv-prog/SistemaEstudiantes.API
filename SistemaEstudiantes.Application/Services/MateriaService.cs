@@ -69,6 +69,7 @@ namespace SistemaEstudiantes.Application.Services
 
                 listMaterias.Add(new MateriaValidadaResponseDTO
                 {
+                    IdMateria = materia.IDMateria,
                     Nombre = materia.Nombre,
                     PuedeIngresar = puedeIngresar,
                     EsMiembro = esMiembro,
