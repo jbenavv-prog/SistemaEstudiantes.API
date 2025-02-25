@@ -23,6 +23,21 @@ namespace SistemaEstudiantes.Infrastructure.Repositories
             return await _context.UsuarioMaterias.ToListAsync();
         }
 
+        public async Task<UsuarioMateria?> GetByUsuarioMateriaAsync(UsuarioMateria usuarioMateria) {
+            return await _context.UsuarioMaterias
+                .Where(um => um.IDUsuario == usuarioMateria.IDUsuario && um.IDMateria == usuarioMateria.IDMateria)
+                .FirstOrDefaultAsync();
+        }
+
+        public async Task<List<Usuario>> GetUsuariosByMateriaIdAsync(int idMateria)
+        {
+            return await _context.UsuarioMaterias
+                .Where(um => um.IDMateria == idMateria && um.Usuario != null) // Filtra nulos
+                .Include(um => um.Usuario)
+                .Select(um => um.Usuario!) // Confirma que nunca será null
+                .ToListAsync();
+        }
+
         public async Task<UsuarioMateria?> GetByIdAsync(int id)
         {
             return await _context.UsuarioMaterias.FindAsync(id);

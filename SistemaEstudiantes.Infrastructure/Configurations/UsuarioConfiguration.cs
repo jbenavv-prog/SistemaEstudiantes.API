@@ -10,6 +10,10 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
         {
             builder.ToTable("Usuarios");
 
+            builder.Property(u => u.Nombre)
+               .IsRequired()
+               .HasMaxLength(100);
+
             builder.HasIndex(u => u.Email)
                 .IsUnique();
        
@@ -19,10 +23,6 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
                    .WithMany(p => p.Usuarios)
                    .HasForeignKey(m => m.IDPrograma)
                    .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Property(u => u.Nombre)
-                .IsRequired()
-                .HasMaxLength(100);
 
             builder.Property(u => u.Email)
                 .IsRequired()

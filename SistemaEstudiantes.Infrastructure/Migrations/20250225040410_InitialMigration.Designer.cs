@@ -12,8 +12,8 @@ using SistemaEstudiantes.Infrastructure.Data;
 namespace SistemaEstudiantes.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250224060228_RequiredIDProgramFromUserQuited2")]
-    partial class RequiredIDProgramFromUserQuited2
+    [Migration("20250225040410_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -216,7 +216,7 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("IDPrograma")
+                    b.Property<int?>("IDPrograma")
                         .HasColumnType("int");
 
                     b.Property<string>("Nombre")
@@ -273,8 +273,7 @@ namespace SistemaEstudiantes.Infrastructure.Migrations
                     b.HasOne("SistemaEstudiantes.Domain.Entities.Programa", "Programa")
                         .WithMany("Usuarios")
                         .HasForeignKey("IDPrograma")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Programa");
                 });
