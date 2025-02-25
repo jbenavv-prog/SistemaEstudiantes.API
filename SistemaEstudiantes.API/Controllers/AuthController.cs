@@ -32,8 +32,15 @@ namespace SistemaEstudiantes.API.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(CreateUsuarioDTO createUsuarioDTO)
         {
-            await _usuarioService.RegisterAsync(createUsuarioDTO);
-            return Ok(new { message = "Usuario creado exitosamente." });
+            try
+            {
+                await _usuarioService.RegisterAsync(createUsuarioDTO);
+                return Ok(new { message = "Usuario creado exitosamente." });
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(new { message = ex.Message});
+            }
         }
     }
 }

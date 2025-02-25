@@ -11,7 +11,9 @@ namespace SistemaEstudiantes.API.Mapping
             CreateMap<UsuarioMateria, UsuarioMateriaResponseDTO>();
             CreateMap<UsuarioMateriaResponseDTO, UsuarioMateria>();
             CreateMap<CreateUsuarioMateriaDTO, UsuarioMateria>();
-            CreateMap<UsuarioMateria, CreateUsuarioMateriaDTO>();   
+            CreateMap<UsuarioMateria, CreateUsuarioMateriaDTO>();
+            CreateMap<UsuarioMateria, UsuarioMateriaDTO>();
+            CreateMap<UsuarioMateriaDTO, UsuarioMateria>();
         }
     }
 }

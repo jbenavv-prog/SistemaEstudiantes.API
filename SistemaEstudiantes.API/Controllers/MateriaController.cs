@@ -27,6 +27,20 @@ namespace SistemaEstudiantes.API.Controllers
                 return BadRequest(new { message = ex.Message});
             }
         }
+
+        [HttpPost("getDetalleMateriaConEstudiantes")]
+        public async Task<IActionResult> GetDetalleMateriaConEstudiantesDTO(UsuarioMateriaDTO usuarioMateriaDTO)
+        {
+            try
+            {
+                var response = await _materiaService.getDetalleMateriaConEstudiantesDTO(usuarioMateriaDTO);
+                return Ok(new { message = "Datos obtenidos", data = response });
+            }
+            catch (Exception ex) 
+            {
+                return BadRequest(new { message = ex.Message});
+            }
+        }
     }
 }
     

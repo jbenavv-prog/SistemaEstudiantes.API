@@ -20,10 +20,44 @@ namespace SistemaEstudiantes.Application.Services
             _materiaRepository = materiaRepository;
             _usuarioMateriaRepository = usuarioMateriaRepository;
             _profesorRepository = profesorRepository;
-            
+
             _mapper = mapper;
         }
 
+        public async Task<DetalleMateriaConEstudiantesResponseDTO> getDetalleMateriaConEstudiantesDTO(UsuarioMateriaDTO usuarioMateriaDTO)
+        {
+            var usuarioMateria = _mapper.Map<UsuarioMateria>(usuarioMateriaDTO);
+            var usuarioMateriaResult = await _usuarioMateriaRepository.GetByUsuarioMateriaAsync(usuarioMateria);
+            var materia = await _materiaRepository.GetByIdAsync(usuarioMateriaDTO.IDMateria);
+
+            if (usuarioMateriaResult == null || materia == null)
+            {
+                return new DetalleMateriaConEstudiantesResponseDTO
+                {
+                    IdMateria = 0, // O algún valor por defecto
+                    Nombre = "Materia no encontrada",
+                    Estudiantes = new List<UsuarioDTO>() // Lista vacía en lugar de `null`
+                };
+            }
+
+            // Obtener los usuarios suscritos a la materia
+            var usuariosSuscritos = await _usuarioMateriaRepository.GetUsuariosByMateriaIdAsync(usuarioMateriaDTO.IDMateria);
+
+            // Mapear a DTOs
+            var estudiantesDTO = usuariosSuscritos.Select(u => new UsuarioDTO
+            {
+                IDUsuario = u.IDUsuario,
+                Nombre = u.Nombre,
+                Email = u.Email
+            }).ToList();
+
+            return new DetalleMateriaConEstudiantesResponseDTO
+            {
+                IdMateria = usuarioMateriaDTO.IDMateria,
+                Nombre = materia.Nombre,
+                Estudiantes = estudiantesDTO
+            };
+        }
         public async Task<List<MateriaValidadaResponseDTO>> GetWithValidations(int idUsuario)
         {
             var listMaterias = new List<MateriaValidadaResponseDTO>();

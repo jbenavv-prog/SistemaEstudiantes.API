@@ -10,6 +10,8 @@ namespace SistemaEstudiantes.Domain.Interfaces
     public interface IUsuarioMateriaRepository
     {
         Task<IEnumerable<UsuarioMateria>> GetAllAsync();
+        Task<UsuarioMateria?> GetByUsuarioMateriaAsync(UsuarioMateria usuarioMateria);
+        Task<List<Usuario>> GetUsuariosByMateriaIdAsync(int idMateria);
         Task<UsuarioMateria?> GetByIdAsync(int id);
         Task<List<UsuarioMateria>> GetByIdUsuarioAsync(int usuarioId);
         Task AddAsync(UsuarioMateria usuarioMateria);
