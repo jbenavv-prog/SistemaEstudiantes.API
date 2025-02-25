@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SistemaEstudiantes.Application.Services;
+using SistemaEstudiantes.DTOs;
 
 namespace SistemaEstudiantes.API.Controllers
 {
@@ -14,11 +15,11 @@ namespace SistemaEstudiantes.API.Controllers
         }
 
         [HttpPost("getWithValidations")]
-        public async Task<IActionResult> GetWithValidations(int idUsuario)
+        public async Task<IActionResult> GetWithValidations(UsuarioDTO usuarioDTO)
         {
             try
             {
-                var response = await _materiaService.GetWithValidations(idUsuario);
+                var response = await _materiaService.GetWithValidations(usuarioDTO.IDUsuario);
                 return Ok(new { message = "Datos obtenidos", data = response });
             }
             catch (Exception ex) 

@@ -14,7 +14,7 @@ namespace SistemaEstudiantes.Domain.Entities
         public int IDUsuarioMateria { get; set; }
         public int IDUsuario{ get; set; }
         public int IDMateria { get; set; }
-        public Usuario Usuario { get; set; } = new Usuario();
-        public Materia Materia { get; set; } = new Materia();
+        public Usuario? Usuario { get; set; }
+        public Materia? Materia { get; set; }
     }
 }
