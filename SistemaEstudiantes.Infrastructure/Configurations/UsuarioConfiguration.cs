@@ -21,8 +21,7 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
 
             builder.HasOne(u => u.Programa)
                    .WithMany(p => p.Usuarios)
-                   .HasForeignKey(m => m.IDPrograma)
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .HasForeignKey(m => m.IDPrograma);
 
             builder.Property(u => u.Email)
                 .IsRequired()

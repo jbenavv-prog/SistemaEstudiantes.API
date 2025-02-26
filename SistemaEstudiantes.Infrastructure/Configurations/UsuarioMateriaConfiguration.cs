@@ -16,8 +16,7 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
             builder.HasOne(u => u.Usuario) // Un usuario tiene muchas materias
                 .WithMany(p => p.UsuarioMaterias) // Un estudiante puede inscribirse en muchas materias
                 .HasForeignKey(u => u.IDUsuario) // Clave foránea en UsuarioMateria
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired();
 
             // ID MATERIA FK
             builder.HasOne(u => u.Materia) // Una materia puede tener muchos estudiantes inscritos

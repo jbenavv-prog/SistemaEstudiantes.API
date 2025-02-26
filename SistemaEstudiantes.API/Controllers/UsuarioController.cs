@@ -18,8 +18,14 @@ namespace SistemaEstudiantes.API.Controllers
         [HttpPost("suscribirPrograma")]
         public async Task<IActionResult> SuscribirPrograma(SuscripcionProgramaUsuarioDTO suscripcionProgramaUsuarioDTO)
         {
-            await _usuarioService.UpdateAsync(suscripcionProgramaUsuarioDTO);
-            return Ok(new { message = "Usuario creado exitosamente." });
+            try
+            {
+                await _usuarioService.UpdateIdProgramaAsync(suscripcionProgramaUsuarioDTO);
+                return Ok(new { message = "Programa suscrito exitosamente." });
+            } catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
         }
     }
 }

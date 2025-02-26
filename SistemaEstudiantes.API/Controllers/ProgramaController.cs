@@ -31,11 +31,11 @@ namespace SistemaEstudiantes.API.Controllers
         }
 
         [HttpPost("getById")]
-        public async Task<IActionResult> GetById(int IDPrograma)
+        public async Task<IActionResult> GetById(ProgramaDTO programa)
         {
             try
             {
-                var response = await _programaService.GetByIdAsync(IDPrograma);
+                var response = await _programaService.GetByIdAsync(programa.IDPrograma);
                 if (response == null)
                     return Ok(new { message = "No se encontraron programas" });
                 return Ok(new { message = "Datos obtenidos", data = response });

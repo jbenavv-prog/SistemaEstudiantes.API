@@ -65,11 +65,11 @@ namespace SistemaEstudiantes.Application.Services
             await _usuarioRepository.AddAsync(usuario);
         }
 
-        public async Task UpdateAsync(SuscripcionProgramaUsuarioDTO suscripcionPrograma)
+        public async Task UpdateIdProgramaAsync(SuscripcionProgramaUsuarioDTO suscripcionPrograma)
         {
             var usuario = _mapper.Map<Usuario>(suscripcionPrograma);
 
-            await _usuarioRepository.UpdateAsync(usuario);
+            await _usuarioRepository.UpdateIdProgramaAsync(usuario.IDUsuario, usuario.IDPrograma);
         }
 
         public async Task DeleteAsync(int id)

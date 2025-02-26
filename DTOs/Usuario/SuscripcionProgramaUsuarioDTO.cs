@@ -2,7 +2,7 @@
 {
     public class SuscripcionProgramaUsuarioDTO
     {
-        public int IDUser { get; set; }
-        public string IDPrograma { get; set; }
+        public int IDUsuario { get; set; }
+        public int? IDPrograma { get; set; }
     }
 }

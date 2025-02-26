@@ -14,8 +14,7 @@ namespace SistemaEstudiantes.Infrastructure.Configurations
             builder.HasOne(m => m.Profesor)
                    .WithMany(p => p.Materias)
                    .HasForeignKey(m => m.IDProfesor)
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .IsRequired();
 
             builder.Property(m => m.Nombre)
                    .IsRequired()

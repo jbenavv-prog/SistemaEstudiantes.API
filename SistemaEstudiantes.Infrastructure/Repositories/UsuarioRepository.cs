@@ -43,6 +43,14 @@ namespace SistemaEstudiantes.Infrastructure.Repositories
             _context.Usuarios.Update(usuario);
             await _context.SaveChangesAsync();
         }
+        public async Task UpdateIdProgramaAsync(int idUsuario, int? idPrograma)
+        {
+            var usuario = await GetByIdAsync(idUsuario);
+            if (usuario == null)
+                throw new Exception($"Usuario {idUsuario} no encontrado");
+            usuario.IDPrograma = idPrograma;
+            await _context.SaveChangesAsync();
+        }
 
         public async Task DeleteAsync(int id)
         {
