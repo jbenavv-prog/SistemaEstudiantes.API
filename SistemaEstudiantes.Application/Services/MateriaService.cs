@@ -105,6 +105,7 @@ namespace SistemaEstudiantes.Application.Services
                 {
                     IdMateria = materia.IDMateria,
                     Nombre = materia.Nombre,
+                    NombreProfesor = profesores.ContainsKey(materia.IDProfesor) ? profesores[materia.IDProfesor].Nombre : "Desconocido",
                     PuedeIngresar = puedeIngresar,
                     EsMiembro = esMiembro,
                     Mensajes = listaMensajes
