@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: wf-students-config
+  namespace: sample-app-namespace-1762220734102
+  labels:
+    app.kubernetes.io/name: wf-students
+    kubernetes.azure.com/generator: devhub
+data:
