@@ -1,55 +1,23 @@
-# This workflow will build and push an application to a Azure Kubernetes Service (AKS) cluster when you push your code
-#
-# This workflow assumes you have already created the target AKS cluster and have created an Azure Container Registry (ACR)
-# The ACR should be attached to the AKS cluster
-# For instructions see:
-#   - https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough-portal
-#   - https://docs.microsoft.com/en-us/azure/container-registry/container-registry-get-started-portal
-#   - https://learn.microsoft.com/en-us/azure/aks/cluster-container-registry-integration?tabs=azure-cli#configure-acr-integration-for-existing-aks-clusters
-#   - https://github.com/Azure/aks-create-action
-#
-# To configure this workflow:
-#
-# 1. Set the following secrets in your repository (instructions for getting these can be found at https://docs.microsoft.com/en-us/azure/developer/github/connect-from-azure?tabs=azure-cli%2Clinux):
-#    - AZURE_CLIENT_ID
-#    - AZURE_TENANT_ID
-#    - AZURE_SUBSCRIPTION_ID
-#
-# 2. Set the following environment variables (or replace the values below):
-#    - ACR_RESOURCE_GROUP (resource group of your ACR)
-#    - AZURE_CONTAINER_REGISTRY (name of your container registry / ACR)
-#    - CLUSTER_NAME (name of the resource to deploy to - fleet name or managed cluster name)
-#    - CLUSTER_RESOURCE_GROUP (where your cluster is deployed)
-#    - CLUSTER_RESOURCE_TYPE (type of resource to deploy to, either 'Microsoft.ContainerService/fleets' or 'Microsoft.ContainerService/managedClusters')
-#    - CONTAINER_NAME (name of the container image you would like to push up to your ACR)
-#    - DEPLOYMENT_MANIFEST_PATH (path to the manifest yaml for your deployment)
-#    - DOCKER_FILE (path to your Dockerfile)
-#    - BUILD_CONTEXT_PATH (path to the context of your Dockerfile)
-#    - NAMESPACE (namespace to deploy your application)
-# For more information on GitHub Actions for Azure, refer to https://github.com/Azure/Actions
-# For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
-# For more options with the actions used below please refer to https://github.com/Azure/login
-
 name: wf-students
 
 on:
   push:
-    branches: [master]
+    branches: [master]   # <- cámbialo a [master] si tu rama principal es master
   workflow_dispatch:
 
 env:
-  ACR_RESOURCE_GROUP: kc-students_group
-  AZURE_CONTAINER_REGISTRY: registry1762219187865
-  CONTAINER_NAME: image-workflow-1762220734058
-  CLUSTER_NAME: kc-students
-  CLUSTER_RESOURCE_GROUP: kc-students_group
+  # ====== Ajusta estos valores a tus recursos reales en Azure ======
+  ACR_RESOURCE_GROUP: kc-students_group            # RG donde está tu ACR
+  AZURE_CONTAINER_REGISTRY: registry1762219187865  # nombre del ACR (sin .azurecr.io)
+  CONTAINER_NAME: image-workflow-1762220734058     # repo de imagen dentro del ACR
+  CLUSTER_NAME: kc-students                        # nombre del AKS
+  CLUSTER_RESOURCE_GROUP: kc-students_group        # RG del AKS
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
-  DEPLOYMENT_MANIFEST_PATH: ./manifests
-  DOCKER_FILE: ./SistemaEstudiantes.API/Dockerfile
-  BUILD_CONTEXT_PATH: ./
-  NAMESPACE: sample-app-namespace-1762220734102
-  ENABLENAMESPACECREATION: false
-  AUTH_TYPE: SERVICE_PRINCIPAL
+  DOCKER_FILE: ./SistemaEstudiantes.API/Dockerfile # ruta al Dockerfile
+  BUILD_CONTEXT_PATH: ./                           # contexto de build (raíz del repo)
+  NAMESPACE: default                               # simplifica usando 'default'
+  ENABLENAMESPACECREATION: "false"                 # pon "true" si quieres crearlo
+  AUTH_TYPE: SERVICE_PRINCIPAL                     # OIDC con azure/login (sin secret)
 
 jobs:
   buildImage:
@@ -58,10 +26,9 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     steps:
-      # Checks out the repository this file is in
       - uses: actions/checkout@v3
 
-      # Logs in with your Azure credentials
+      # Login a Azure con OIDC (usa tus 3 secrets del repo)
       - name: Azure login
         uses: azure/login@v2.2.0
         with:
@@ -70,15 +37,19 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           auth-type: ${{ env.AUTH_TYPE }}
 
-      # Logs into ACR
+      # Login a ACR (te autentica Docker contra <acr>.azurecr.io)
       - name: Log into ACR
         run: |
           az acr login -n ${{ env.AZURE_CONTAINER_REGISTRY }}
 
-      # Builds and pushes an image up to your Azure Container Registry
-      - name: Build and push image to ACR
+      # Build & Push en el runner (evita ACR Tasks)
+      - name: Build and push image to ACR (no ACR Tasks)
         run: |
-          az acr build --image ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} --registry ${{ env.AZURE_CONTAINER_REGISTRY }} -g ${{ env.ACR_RESOURCE_GROUP }} -f ${{ env.DOCKER_FILE }} ${{ env.BUILD_CONTEXT_PATH }}
+          docker build -f ${{ env.DOCKER_FILE }} \
+            -t ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }} \
+            ${{ env.BUILD_CONTEXT_PATH }}
+          docker push ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
+
   deploy:
     permissions:
       actions: read
@@ -87,10 +58,8 @@ jobs:
     runs-on: ubuntu-latest
     needs: [buildImage]
     steps:
-      # Checks out the repository this file is in
       - uses: actions/checkout@v3
 
-      # Logs in with your Azure credentials
       - name: Azure login
         uses: azure/login@v2.2.0
         with:
@@ -99,73 +68,47 @@ jobs:
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
           auth-type: ${{ env.AUTH_TYPE }}
 
-      # Use kubelogin to configure your kubeconfig for Azure auth
+      # kubelogin para auth no interactiva contra AKS
       - name: Set up kubelogin for non-interactive login
         uses: azure/use-kubelogin@v1
         with:
           kubelogin-version: 'v0.0.25'
 
-      # Retrieves your Azure Kubernetes Service cluster's kubeconfig file
+      # Contexto del clúster (admin=true para el primer deploy; luego puedes poner false)
       - name: Get K8s context
         uses: azure/aks-set-context@v4
         with:
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
           cluster-name: ${{ env.CLUSTER_NAME }}
-          admin: 'false'
+          admin: 'true'                 # <- cambia a 'false' después del primer despliegue
           use-kubelogin: 'true'
           resource-type: ${{ env.CLUSTER_RESOURCE_TYPE }}
 
-      # Checks if the AKS cluster is private
-      - name: Is private cluster
-        if: ${{ env.CLUSTER_RESOURCE_TYPE != 'Microsoft.ContainerService/fleets' }}
-        id: isPrivate
-        run: |
-          result=$(az aks show --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --query "apiServerAccessProfile.enablePrivateCluster")
-          echo "PRIVATE_CLUSTER=$result" >> "$GITHUB_OUTPUT"
-
-      # Create Namespace
+      # (Opcional) Crear namespace si lo habilitas
       - name: Create Namespace
         if: ${{ env.ENABLENAMESPACECREATION == 'true' }}
         run: |
-          if [ ${{ steps.isPrivate.outputs.PRIVATE_CLUSTER}} == 'true' ]; then
-            command_id=$(az aks command invoke --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --command "kubectl get namespace ${{ env.NAMESPACE }} || kubectl create namespace ${{ env.NAMESPACE }}" --query id -o tsv)
-            result=$(az aks command result --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --command-id $command_id)
-            echo "Command Result: $result"
-            exitCode=$(az aks command result --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --command-id $command_id --query exitCode -o tsv)
-            if [ $exitCode -ne 0 ]; then
-              exit $exitCode
-            fi
-          else
-            kubectl get namespace ${{ env.NAMESPACE }} || kubectl create namespace ${{ env.NAMESPACE }}
-          fi
+          kubectl get namespace ${{ env.NAMESPACE }} || kubectl create namespace ${{ env.NAMESPACE }}
 
-      # Validate Namespace exists
+      # Validar que el namespace exista (si usas 'default', esto siempre pasa)
       - name: Validate Namespace Exists
         run: |
-          if [ ${{ steps.isPrivate.outputs.PRIVATE_CLUSTER}} == 'true' ]; then
-            command_id=$(az aks command invoke --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --command "kubectl get namespace ${{ env.NAMESPACE }}" --query id -o tsv)
-            result=$(az aks command result --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --command-id $command_id)
-            echo "Command Result: $result"
-            exitCode=$(az aks command result --resource-group ${{ env.CLUSTER_RESOURCE_GROUP }} --name ${{ env.CLUSTER_NAME }} --command-id $command_id --query exitCode -o tsv)
-            if [ $exitCode -ne 0 ]; then
-              exit $exitCode
-            fi
-          else
-            kubectl get namespace ${{ env.NAMESPACE }}
-          fi
+          kubectl get namespace ${{ env.NAMESPACE }}
 
-      # Deploys application based on given manifest  file
+      # Despliegue de manifests y actualización de la imagen al tag del commit
       - name: Deploys application
         uses: Azure/k8s-deploy@v5
         with:
           action: deploy
-          manifests: ${{ env.DEPLOYMENT_MANIFEST_PATH }}
+          # Lista explícita de manifests (recom.)
+          manifests: |
+            ./manifests/deployment.yaml
+            ./manifests/service.yaml
           images: |
             ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_NAME }}:${{ github.sha }}
           resource-group: ${{ env.CLUSTER_RESOURCE_GROUP }}
           name: ${{ env.CLUSTER_NAME }}
-          private-cluster: ${{ steps.isPrivate.outputs.PRIVATE_CLUSTER == 'true' }}
+          private-cluster: false
           namespace: ${{ env.NAMESPACE }}
           resource-type: ${{ env.CLUSTER_RESOURCE_TYPE }}
-          annotate-namespace: ${{ env.CLUSTER_RESOURCE_TYPE != 'Microsoft.ContainerService/fleets' }}
-
+          annotate-namespace: true
