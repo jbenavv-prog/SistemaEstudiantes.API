@@ -1,0 +1,6 @@
+services:
+  sistemaestudiantes.api:
+    image: ${DOCKER_REGISTRY-}sistemaestudiantesapi
+    build:
+      context: .
+      dockerfile: SistemaEstudiantes.API/Dockerfile
