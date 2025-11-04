@@ -1,0 +1,22 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: wf-students
+  labels:
+    app.kubernetes.io/name: wf-students
+    app.kubernetes.io/part-of: wf-students-project
+    kubernetes.azure.com/generator: devhub
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: wf-students
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 80
