@@ -15,7 +15,7 @@ env:
   CLUSTER_RESOURCE_TYPE: Microsoft.ContainerService/managedClusters
   DOCKER_FILE: ./SistemaEstudiantes.API/Dockerfile # ruta al Dockerfile
   BUILD_CONTEXT_PATH: ./                           # contexto de build (raíz del repo)
-  NAMESPACE: default                               # simplifica usando 'default'
+  NAMESPACE: sample-app-namespace-1762220734102    # simplifica usando 'default'
   ENABLENAMESPACECREATION: "false"                 # pon "true" si quieres crearlo
   AUTH_TYPE: SERVICE_PRINCIPAL                     # OIDC con azure/login (sin secret)
 
