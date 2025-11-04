@@ -2,10 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wf-students
+  namespace: sample-app-namespace-1762220734102
   labels:
     app.kubernetes.io/name: wf-students
     kubernetes.azure.com/generator: devhub
-  namespace: sample-app-namespace-1762220734102
 spec:
   replicas: 1
   selector:
@@ -21,45 +21,42 @@ spec:
           image: registry1762219187865.azurecr.io/image-workflow-1762220734058:latest
           imagePullPolicy: Always
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           resources:
             requests:
-              cpu: "0.5"
-              memory: "0.5Gi"
+              cpu: "500m"
+              memory: "512Mi"
             limits:
               cpu: "1"
               memory: "1Gi"
           envFrom:
             - configMapRef:
                 name: wf-students-config
+                optional: true   # evita fallo si aún no existe
             - secretRef:
                 name: secret-ref
                 optional: true
-          livenessProbe:
-            tcpSocket:
-              port: 80
           readinessProbe:
-            tcpSocket:
-              port: 80
+            tcpSocket: { port: 8080 }
+            initialDelaySeconds: 3
             periodSeconds: 5
             timeoutSeconds: 5
             failureThreshold: 1
             successThreshold: 1
-            initialDelaySeconds: 3
+          livenessProbe:
+            tcpSocket: { port: 8080 }
+            initialDelaySeconds: 5
+            periodSeconds: 10
           startupProbe:
-            tcpSocket:
-              port: 80
+            tcpSocket: { port: 8080 }
+            initialDelaySeconds: 0
             periodSeconds: 10
             timeoutSeconds: 1
             failureThreshold: 3
-            successThreshold: 1
-            initialDelaySeconds: 0
           securityContext:
-            seccompProfile:
-              type: RuntimeDefault
+            seccompProfile: { type: RuntimeDefault }
             capabilities:
-              drop:
-                - ALL
+              drop: [ "ALL" ]
               add:
                 - SETPCAP
                 - MKNOD
@@ -78,12 +75,12 @@ spec:
       affinity:
         podAntiAffinity:
           preferredDuringSchedulingIgnoredDuringExecution:
-          - weight: 100
-            podAffinityTerm:
-              topologyKey: kubernetes.io/hostname
-              labelSelector:
-                matchLabels:
-                  app.kubernetes.io/name: wf-students
+            - weight: 100
+              podAffinityTerm:
+                topologyKey: kubernetes.io/hostname
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: wf-students
       topologySpreadConstraints:
         - maxSkew: 1
           topologyKey: kubernetes.io/hostname

@@ -12,5 +12,5 @@ spec:
     app.kubernetes.io/name: wf-students
   ports:
     - protocol: TCP
-      port: 80
-      targetPort: 80
+      port: 80          # puerto público del LB
+      targetPort: 8080  # puerto del contenedor (coincide con containerPort/probes)
